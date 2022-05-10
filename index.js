@@ -2,19 +2,19 @@ const express = require("express");
 const fs = require("fs");
 const path = require("path");
 
+const videoPath = path.resolve(__dirname, "public", "video.mp4");
+
 const app = express();
 
-const videoPath = path.resolve(__dirname, "videos", "what-if-s01e08.mp4");
-
-app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/index.html");
-});
+app.use(express.static("public"));
 
 app.get("/video", (req, res) => {
   const { range } = req.headers;
+
   if (!range) {
     res.status(400).send("Requires Range header");
   }
+
   const videoSize = fs.statSync(videoPath).size;
 
   const CHUNK_SIZE = 10 ** (6 ** 10);
@@ -28,6 +28,7 @@ app.get("/video", (req, res) => {
     "Content-Length": contentLength,
     "Content-Type": "video/mp4",
   };
+
   res.writeHead(206, headers);
 
   const videoStream = fs.createReadStream(videoPath, { start, end });
