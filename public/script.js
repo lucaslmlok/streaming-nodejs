@@ -181,6 +181,7 @@ video.addEventListener("volumechange", () => {
 // View Modes
 theaterBtn.addEventListener("click", toggleTheaterMode);
 fullScreenBtn.addEventListener("click", toggleFullScreenMode);
+video.addEventListener("dblclick", toggleFullScreenMode);
 miniPlayerBtn.addEventListener("click", toggleMiniPlayerMode);
 
 function toggleTheaterMode() {
@@ -229,4 +230,18 @@ video.addEventListener("play", () => {
 
 video.addEventListener("pause", () => {
   videoContainer.classList.add("paused");
+});
+
+// Show / Hide Controls on Fullscreen
+let timeout;
+
+videoContainer.addEventListener("mousemove", () => {
+  clearTimeout(timeout);
+  if (document.fullscreenElement === null) return;
+
+  videoContainer.classList.add("active");
+
+  timeout = setTimeout(() => {
+    videoContainer.classList.remove("active");
+  }, 1000 * 3);
 });

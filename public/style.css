@@ -8,6 +8,13 @@ body {
   margin: 0;
 }
 
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4rem;
+}
+
 .video-container {
   position: relative;
   width: 90%;
@@ -30,6 +37,10 @@ body {
 
 .video-container.full-screen {
   max-height: 100vh;
+}
+
+.video-container:not(.active):not(.paused) {
+  cursor: none;
 }
 
 video {
@@ -58,9 +69,10 @@ video {
   pointer-events: none;
 }
 
-.video-container:hover .video-controls-container,
+.video-container:not(.full-screen):hover .video-controls-container,
 .video-container:focus-within .video-controls-container,
-.video-container.paused .video-controls-container {
+.video-container.paused .video-controls-container,
+.video-container.full-screen.active .video-controls-container {
   opacity: 1;
 }
 
@@ -200,7 +212,7 @@ video {
 }
 
 .timeline .thumb-indicator {
-  --scale: 1;
+  --scale: 0;
   position: absolute;
   height: 200%;
   aspect-ratio: 1;
