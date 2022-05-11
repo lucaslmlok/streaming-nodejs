@@ -1,3 +1,4 @@
+const controlContainer = document.querySelector(".video-controls-container");
 const playPauseBtn = document.querySelector(".play-pause-btn");
 const theaterBtn = document.querySelector(".theater-btn");
 const fullScreenBtn = document.querySelector(".full-screen-btn");
@@ -232,16 +233,38 @@ video.addEventListener("pause", () => {
   videoContainer.classList.add("paused");
 });
 
-// Show / Hide Controls on Fullscreen
+// Show / Hide Controls on Fullscreen (Idle)
+let isHoverControls = false;
+
+controlContainer.addEventListener("mouseleave", () => {
+  isHoverControls = false;
+});
+
+controlContainer.addEventListener("mouseover", () => {
+  isHoverControls = true;
+});
+
 let timeout;
 
-videoContainer.addEventListener("mousemove", () => {
-  clearTimeout(timeout);
-  if (document.fullscreenElement === null) return;
+videoContainer.addEventListener("mousemove", toggleIdleMode);
+video.addEventListener("play", toggleIdleMode);
 
-  videoContainer.classList.add("active");
+function toggleIdleMode() {
+  clearTimeout(timeout);
+
+  if (document.fullscreenElement === null || isHoverControls) {
+    videoContainer.classList.remove("idle");
+    return;
+  }
+
+  videoContainer.classList.remove("idle");
 
   timeout = setTimeout(() => {
-    videoContainer.classList.remove("active");
+    videoContainer.classList.add("idle");
   }, 1000 * 3);
+}
+
+// Unfocus Button When Mouse Click
+videoContainer.addEventListener("mouseup", () => {
+  document.activeElement.blur();
 });

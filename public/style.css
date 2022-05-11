@@ -8,6 +8,11 @@ body {
   margin: 0;
 }
 
+iframe {
+  width: 90%;
+  aspect-ratio: 16 / 9;
+}
+
 .container {
   display: flex;
   flex-direction: column;
@@ -39,7 +44,7 @@ body {
   max-height: 100vh;
 }
 
-.video-container:not(.active):not(.paused) {
+.video-container.idle:not(.paused) {
   cursor: none;
 }
 
@@ -72,7 +77,7 @@ video {
 .video-container:not(.full-screen):hover .video-controls-container,
 .video-container:focus-within .video-controls-container,
 .video-container.paused .video-controls-container,
-.video-container.full-screen.active .video-controls-container {
+.video-container.full-screen:not(.idle) .video-controls-container {
   opacity: 1;
 }
 
